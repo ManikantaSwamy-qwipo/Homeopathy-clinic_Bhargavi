@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dr. Bhargavi Homeopathic Clinic – Natural, safe and effective homeopathic treatments in Eluru, Andhra Pradesh. Book your appointment today." />
+  <meta name="keywords" content="homeopathy, homeopathic clinic, Dr Bhargavi, Eluru, natural treatment, BHMS, appointment" />
+  <title>Dr. Bhargavi Homeopathic Clinic</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpeg" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top" id="mainNavbar">
+    <div class="container-fluid">
+
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#home" onclick="scrollToSection('home'); return false;">
+        <img src="assets/logo.jpeg" width="40" height="40" class="rounded-circle" alt="Clinic Logo" />
+        <span>Dr. Bhargavi Homeopathic Clinic</span>
+      </a>
+
+      <!-- Toggle Button -->
+      <button class="navbar-toggler" type="button" id="navToggler" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Menu -->
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" id="nav-home" href="#home" onclick="scrollToSection('home'); return false;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav-about" href="#about" onclick="scrollToSection('about'); return false;">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav-treatments" href="#treatments" onclick="scrollToSection('treatments'); return false;">Treatments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav-appointment" href="#appointment" onclick="scrollToSection('appointment'); return false;">Appointment</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav-contact" href="#contact" onclick="scrollToSection('contact'); return false;">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ===================== HOME (CAROUSEL) ===================== -->
+  <section id="home" class="fade-in">
+    <div class="hero">
+      <div class="carousel" id="heroCarousel">
+        <!-- Images injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="fade-in">
+    <div class="about-page">
+
+      <div class="about-header">
+        <h1>About Our Clinic</h1>
+        <p>
+          We provide safe, natural, and effective homeopathic treatments
+          for long-term health conditions without side effects.
+        </p>
+      </div>
+
+      <div class="about-content">
+        <div class="about-text">
+          <h2>Dr. Bhargavi Homeopathic Clinic</h2>
+          <p>
+            Our clinic is dedicated to holistic healing using natural remedies.
+            We focus on treating the root cause of diseases rather than just symptoms.
+          </p>
+          <p>
+            With years of experience, we ensure personalized care for every patient,
+            helping them achieve long-term wellness.
+          </p>
+        </div>
+
+        <div class="doctor-card">
+          <h3>Dr. Bhargavi</h3>
+          <p>BHMS Certified Practitioner</p>
+          <p>Qualified Homeopathy Specialist</p>
+          <span>Evidence-Based Homeopathic Care</span>
+        </div>
+      </div>
+
+      <div class="why-section">
+        <h2>Why Choose Us?</h2>
+        <div class="features">
+          <div class="feature-card"><span class="icon">🌿</span><p>Natural Treatment</p></div>
+          <div class="feature-card"><span class="icon">💊</span><p>No Side Effects</p></div>
+          <div class="feature-card"><span class="icon">👨‍⚕️</span><p>Personalized Care</p></div>
+          <div class="feature-card"><span class="icon">🧠</span><p>Holistic Healing</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== TREATMENTS ===================== -->
+  <section id="treatments" class="fade-in">
+    <div class="treatment-container">
+      <h1>Our Treatments</h1>
+      <p class="subtitle">
+        We provide safe and effective homeopathic treatment for various health conditions.
+      </p>
+      <div class="treatment-grid" id="treatmentGrid">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== APPOINTMENT ===================== -->
+  <section id="appointment" class="fade-in">
+    <div class="appointment-page">
+
+      <div class="section-header text-center">
+        <h1>Book Your Appointment</h1>
+        <p>Quick, easy and personalized homeopathy consultation</p>
+      </div>
+
+      <div class="appointment-container">
+
+        <!-- LEFT PANEL -->
+        <div class="info-panel">
+          <h2>Why Choose Us?</h2>
+          <p>Get expert homeopathy consultation for long-term health problems.</p>
+          <ul>
+            <li>✔ Natural Treatment</li>
+            <li>✔ No Side Effects</li>
+            <li>✔ Personalized Care</li>
+            <li>✔ Experienced Doctor</li>
+          </ul>
+        </div>
+
+        <!-- RIGHT FORM -->
+        <div class="form-panel">
+          <h2>Schedule Visit</h2>
+
+          <!-- NAME -->
+          <input type="text" id="apptName" placeholder="Full Name" autocomplete="name" />
+          <span class="error" id="nameError"></span>
+
+          <!-- MOBILE -->
+          <input type="tel" id="apptMobile" placeholder="Mobile Number" autocomplete="tel" maxlength="10" />
+          <span class="error" id="mobileError"></span>
+
+          <!-- GENDER -->
+          <select id="apptGender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <span class="error" id="genderError"></span>
+
+          <!-- DATE -->
+          <input type="date" id="apptDate" />
+          <span class="error" id="dateError"></span>
+
+          <!-- TIME -->
+          <select id="apptTime">
+            <option value="">Select Time</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="01:00 PM">01:00 PM</option>
+            <option value="05:00 PM">05:00 PM</option>
+            <option value="06:00 PM">06:00 PM</option>
+            <option value="07:00 PM">07:00 PM</option>
+            <option value="08:00 PM">08:00 PM</option>
+          </select>
+          <span class="error" id="timeError"></span>
+
+          <!-- SUBMIT -->
+          <button class="submit-btn" id="apptSubmitBtn" onclick="submitAppointment()">
+            Book an Appointment
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="fade-in">
+    <div class="contact-container">
+      <h1>Contact Us</h1>
+      <p class="subtitle">We are here to help you</p>
+
+      <div class="contact-layout">
+
+        <!-- LEFT: MAP -->
+        <div class="map-section">
+          <iframe
+            src="https://www.google.com/maps?q=17.0285,81.0995&z=16&output=embed"
+            allowfullscreen
+            loading="lazy"
+            title="Clinic Location Map">
+          </iframe>
+          <div style="text-align:center;">
+            <a
+              href="https://maps.app.goo.gl/sWV4vuptYenVPNa89"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="direction-btn">
+              📍 Get Directions
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: DETAILS -->
+        <div class="details-section">
+          <div class="card">
+            <h2>👨‍⚕️ Doctor Details</h2>
+            <p><strong>Dr. N Bhargavi</strong></p>
+            <p>BHMS</p>
+            <p>Homeopathy Specialist</p>
+            <p>★★★★★</p>
+          </div>
+          <div class="card">
+            <h2>📞 Contact</h2>
+            <p><strong>Phone:</strong><br>
+              <a href="tel:+919392997720">+91 9392997720</a>
+            </p>
+            <p><strong>Email:</strong><br>
+              <a href="mailto:drbhargavi.homoeo@gmail.com" style="font-size:15px;">drbhargavi.homoeo@gmail.com</a>
+            </p>
+          </div>
+          <div class="card">
+            <h2>📍 Address</h2>
+            <p>Opposite Peniel Church,<br>
+               Tengellamudi, Lunani Nagar,<br>
+               Eluru, Andhra Pradesh - 534005</p>
+          </div>
+          <div class="card">
+            <h2>⏰ Timings</h2>
+            <p>Morning: 10:00 AM – 1:30 PM</p>
+            <p>Evening: 5:00 PM – 8:30 PM</p>
+            <p>Sunday: Holiday</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-success text-white mt-5">
+    <div class="container py-4">
+      <div class="row text-center text-md-start">
+
+        <!-- LEFT -->
+        <div class="col-12 col-md-6 mb-4">
+          <h5 class="fw-bold">Dr. Bhargavi Homoeopathic Clinic</h5>
+          <p class="small mb-0 clinic-text">
+            Providing natural homeopathic care that treats the root cause of illness.<br>
+            Personalized treatments designed for each individual.<br>
+            Focused on long-term health and overall wellness.
+          </p>
+        </div>
+
+        <!-- CENTER -->
+        <div class="col-12 col-md-3 mb-3">
+          <h5 class="fw-bold">Quick Links</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-1"><a class="footer-link" href="#home"        onclick="scrollToSection('home');        return false;">Home</a></li>
+            <li class="mb-1"><a class="footer-link" href="#about"       onclick="scrollToSection('about');       return false;">About</a></li>
+            <li class="mb-1"><a class="footer-link" href="#treatments"  onclick="scrollToSection('treatments');  return false;">Treatments</a></li>
+            <li class="mb-1"><a class="footer-link" href="#appointment" onclick="scrollToSection('appointment'); return false;">Appointment</a></li>
+            <li class="mb-1"><a class="footer-link" href="#contact"     onclick="scrollToSection('contact');     return false;">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-12 col-md-3 mb-3">
+          <h5 class="fw-bold">Contact</h5>
+          <p class="mb-2 d-flex align-items-start justify-content-center justify-content-md-start">
+            <span class="me-2">📞</span>
+            <span><a href="tel:+919392997720" class="text-white text-decoration-none">+91 9392997720</a></span>
+          </p>
+          <p class="mb-2 d-flex align-items-start justify-content-center justify-content-md-start">
+            <span class="me-2">📍</span>
+            <span class="text-break">
+              Opposite Peniel Church,<br>
+              Tengellamudi,<br>
+              Lunani Nagar,<br>
+              Eluru,<br>
+              Andhra Pradesh - 534005
+            </span>
+          </p>
+          <p class="mb-0 d-flex align-items-start justify-content-center justify-content-md-start">
+            <span class="me-2">📧</span>
+            <span>
+              <a href="mailto:drbhargavi.homoeo@gmail.com" class="text-white text-decoration-none">
+                drbhargavi.homoeo@gmail.com
+              </a>
+            </span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="footer-bottom text-center px-3">
+      <p class="mb-0 small">
+        © <span id="footerYear"></span> Dr. Bhargavi Homeopathy Clinic. All Rights Reserved.<br>
+        Designed &amp; Developed by
+        <a
+          href="https://www.linkedin.com/in/manikantaswamyjupudi/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="developer-link">
+          Jupudi Manikanta Swamy
+          <i class="bi bi-linkedin ms-1"></i>
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================== FLOATING BUTTON ===================== -->
+  <button class="whatsapp-float" onclick="scrollToSection('appointment')" aria-label="Book an Appointment">
+    Book an Appointment
+  </button>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+
+</body>
+</html>
