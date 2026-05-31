@@ -222,11 +222,12 @@ function scrollToSection(id) {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  // Close mobile nav if open
+
+  // Close mobile nav if open — Bootstrap owns the collapse instance
   const navMenu = document.getElementById('navMenu');
   if (navMenu && navMenu.classList.contains('show')) {
-    const bsCollapse = bootstrap.Collapse.getInstance(navMenu);
-    if (bsCollapse) bsCollapse.hide();
+    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navMenu);
+    bsCollapse.hide();
   }
 }
 
@@ -234,13 +235,8 @@ function scrollToSection(id) {
    NAVBAR MOBILE TOGGLE
    ===================================================== */
 function initNavbar() {
-  const toggler = document.getElementById('navToggler');
-  const navMenu = document.getElementById('navMenu');
-  if (!toggler || !navMenu) return;
-
-  toggler.addEventListener('click', () => {
-    navMenu.classList.toggle('show');
-  });
+  // Bootstrap handles the hamburger toggle via data-bs-toggle on the button.
+  // Nothing extra needed here.
 }
 
 /* =====================================================
