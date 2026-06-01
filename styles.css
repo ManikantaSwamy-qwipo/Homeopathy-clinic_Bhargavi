@@ -85,7 +85,9 @@ section {
 .hero {
   position: relative;
   width: 100%;
+  /* iOS Safari: 100vh includes browser chrome, use fill-available as fallback */
   height: 100vh;
+  height: -webkit-fill-available;
   min-height: 400px;
   overflow: hidden;
   margin: 0;
@@ -95,8 +97,6 @@ section {
 @media (max-width: 768px) {
   .hero {
     height: 60vh;
-    /* iOS Safari: 100vh includes browser chrome, fill-available fixes it */
-    height: -webkit-fill-available;
     min-height: 350px;
     margin-bottom: 0;
   }
@@ -426,22 +426,20 @@ section {
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
-  /* iOS Safari: remove native styling */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   background-color: #ffffff;
   color: #333333;
-  /* iOS Safari: remove inner shadow on inputs */
   -webkit-box-shadow: none;
   box-shadow: none;
+  font-family: inherit;
 }
 
 .form-panel input:focus,
 .form-panel select:focus {
   outline: none;
   border-color: #2c7a7b;
-  /* iOS Safari: remove glow */
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -455,6 +453,110 @@ section {
   background-position: right 12px center;
   background-size: 16px;
   padding-right: 40px;
+}
+
+/* =====================================================
+   DATE INPUT — custom wrapper for iOS Safari
+   iOS Safari breaks completely when appearance:none is
+   applied to type="date". We use a wrapper div that
+   shows a styled label, with the real input overlaid
+   invisibly on top so the native picker still opens.
+   ===================================================== */
+.date-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+/* The visible styled label */
+.date-display {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #999999;
+  min-height: 48px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.date-display.has-value {
+  color: #333333;
+}
+
+.date-display.valid-date {
+  border-color: #28a745;
+}
+
+.date-display.invalid-date {
+  border-color: #dc3545;
+}
+
+.date-display:focus-within {
+  border-color: #2c7a7b;
+}
+
+/* Calendar icon on the right */
+.date-display::after {
+  content: '📅';
+  margin-left: auto;
+  font-size: 16px;
+}
+
+/* The real date input — invisible, sits on top of the wrapper */
+.date-wrapper input[type="date"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* Keep native appearance so iOS picker works */
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 16px; /* prevent iOS zoom */
+  z-index: 2;
+  box-sizing: border-box;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* On non-iOS (where appearance:none works fine), show the real input normally */
+@supports not (-webkit-touch-callout: none) {
+  .date-wrapper input[type="date"] {
+    position: relative;
+    opacity: 1;
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #333333;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+
+  .date-wrapper input[type="date"]:focus {
+    outline: none;
+    border-color: #2c7a7b;
+  }
+
+  .date-wrapper input[type="date"].valid   { border-color: #28a745; }
+  .date-wrapper input[type="date"].invalid { border-color: #dc3545; }
+
+  /* Hide the visual label on non-iOS since the real input is visible */
+  .date-display { display: none; }
 }
 
 /* iOS Safari: date input text color fix (shows grey by default when empty) */

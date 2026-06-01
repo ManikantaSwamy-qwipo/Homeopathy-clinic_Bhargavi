@@ -119,6 +119,7 @@ function buildCarousel() {
 }
 
 function updateCarouselUI() {
+  const images = getImages();
   const imgEls = document.querySelectorAll('#heroCarousel .hero-img');
   const dotEls = document.querySelectorAll('#heroCarousel .dots span');
 
@@ -249,14 +250,30 @@ function setMinDate() {
   if (!dateInput) return;
   const today = new Date().toISOString().split('T')[0];
   dateInput.min = today;
-  // iOS Safari: update color based on whether a value is set
-  updateDateColor(dateInput);
+  updateDateDisplay(dateInput);
 }
 
-// iOS Safari: date input shows dark text only when a value is selected
-function updateDateColor(input) {
+// Format YYYY-MM-DD → "01 Jun 2026" for the iOS display label
+function formatDateForDisplay(val) {
+  if (!val) return 'Select Date';
+  const [year, month, day] = val.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
+}
+
+// Update the visible date label (iOS) and sync valid/invalid classes
+function updateDateDisplay(input) {
   if (!input) return;
-  input.style.color = input.value ? '#333333' : '#999999';
+  const display = document.getElementById('dateDisplay');
+  if (!display) return;
+
+  if (input.value) {
+    display.textContent = formatDateForDisplay(input.value);
+    display.classList.add('has-value');
+  } else {
+    display.textContent = 'Select Date';
+    display.classList.remove('has-value');
+  }
 }
 
 function getVal(id) {
@@ -274,6 +291,15 @@ function setFieldState(inputId, isValid) {
   if (!el) return;
   el.classList.toggle('valid',   isValid);
   el.classList.toggle('invalid', !isValid);
+
+  // Also sync the iOS date display label border
+  if (inputId === 'apptDate') {
+    const display = document.getElementById('dateDisplay');
+    if (display) {
+      display.classList.toggle('valid-date',   isValid);
+      display.classList.toggle('invalid-date', !isValid);
+    }
+  }
 }
 
 function validateForm() {
@@ -388,7 +414,7 @@ function initAppointmentForm() {
         validateForm();
         if (id === 'apptDate') {
           filterTimeSlots();
-          updateDateColor(el); // iOS Safari date color fix
+          updateDateDisplay(el); // update iOS date label
         }
       });
     el.addEventListener('blur',   () => { touched[touchKey] = true; validateForm(); });
@@ -450,11 +476,15 @@ function resetAppointmentForm() {
     if (el) {
       el.value = '';
       el.classList.remove('valid', 'invalid');
-      el.style.color = ''; // reset inline color
+      el.style.color = '';
     }
   });
-  // Reset date input color for iOS
-  updateDateColor(document.getElementById('apptDate'));
+  // Reset iOS date display label
+  const display = document.getElementById('dateDisplay');
+  if (display) {
+    display.textContent = 'Select Date';
+    display.classList.remove('has-value', 'valid-date', 'invalid-date');
+  }
   ['nameError', 'mobileError', 'genderError', 'dateError', 'timeError'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
