@@ -5,14 +5,21 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Prevent iOS tap highlight flash */
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
+  /* Prevent iOS font size inflation on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Prevent horizontal overflow on iOS */
+  overflow-x: hidden;
 }
 
 img {
@@ -66,6 +73,12 @@ section {
   border-bottom: 2px solid white;
 }
 
+/* iOS Safari: sticky needs -webkit- prefix */
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
 /* =====================================================
    HOME – HERO CAROUSEL
    ===================================================== */
@@ -82,6 +95,8 @@ section {
 @media (max-width: 768px) {
   .hero {
     height: 60vh;
+    /* iOS Safari: 100vh includes browser chrome, fill-available fixes it */
+    height: -webkit-fill-available;
     min-height: 350px;
     margin-bottom: 0;
   }
@@ -103,6 +118,10 @@ section {
   opacity: 0;
   transition: opacity 1s ease;
   z-index: 0;
+  /* Force GPU compositing on iOS to prevent transition stutter */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: opacity;
 }
 
 .hero-img.active {
@@ -403,29 +422,52 @@ section {
   padding: 12px;
   border-radius: 8px;
   border: 2px solid #ddd;
-  font-size: 16px;
+  font-size: 16px; /* Prevents iOS auto-zoom on focus */
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
+  /* iOS Safari: remove native styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #ffffff;
+  color: #333333;
+  /* iOS Safari: remove inner shadow on inputs */
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .form-panel input:focus,
 .form-panel select:focus {
   outline: none;
   border-color: #2c7a7b;
+  /* iOS Safari: remove glow */
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .form-panel select {
-  background: white;
   cursor: pointer;
   position: relative;
   z-index: 10;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
   padding-right: 40px;
+}
+
+/* iOS Safari: date input text color fix (shows grey by default when empty) */
+.form-panel input[type="date"] {
+  color: #333333;
+  /* Ensure placeholder-like empty state looks right */
+  min-height: 48px;
+}
+
+/* iOS Safari: date input shows grey when no value selected */
+.form-panel input[type="date"]:not([value]),
+.form-panel input[type="date"][value=""] {
+  color: #999999;
 }
 
 .form-panel input.invalid,
@@ -457,6 +499,10 @@ section {
   font-size: 16px;
   font-weight: 600;
   transition: background-color 0.3s ease;
+  /* iOS Safari: remove native button styling */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
 }
 
 .submit-btn:hover:not(:disabled) { background: #218838; }
@@ -658,7 +704,7 @@ footer p { line-height: 1.5; }
    ===================================================== */
 .whatsapp-float {
   position: fixed;
-  bottom: 61px;
+  bottom: calc(61px + env(safe-area-inset-bottom));
   right: 16px;
   background: #25d366;
   color: white;
@@ -670,6 +716,9 @@ footer p { line-height: 1.5; }
   z-index: 999;
   border-radius: 5px;
   transition: background 0.3s;
+  /* iOS Safari: remove native button styling */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .whatsapp-float:hover { background: #1ebe5d; }

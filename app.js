@@ -119,7 +119,6 @@ function buildCarousel() {
 }
 
 function updateCarouselUI() {
-  const images = getImages();
   const imgEls = document.querySelectorAll('#heroCarousel .hero-img');
   const dotEls = document.querySelectorAll('#heroCarousel .dots span');
 
@@ -220,6 +219,7 @@ function onScroll() {
 function scrollToSection(id) {
   const el = document.getElementById(id);
   if (el) {
+    // Use polyfill-compatible scroll — works on iOS Safari < 15.4
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -249,6 +249,14 @@ function setMinDate() {
   if (!dateInput) return;
   const today = new Date().toISOString().split('T')[0];
   dateInput.min = today;
+  // iOS Safari: update color based on whether a value is set
+  updateDateColor(dateInput);
+}
+
+// iOS Safari: date input shows dark text only when a value is selected
+function updateDateColor(input) {
+  if (!input) return;
+  input.style.color = input.value ? '#333333' : '#999999';
 }
 
 function getVal(id) {
@@ -375,7 +383,14 @@ function initAppointmentForm() {
     if (!el) return;
 
     el.addEventListener('input',  () => { touched[touchKey] = true; validateForm(); });
-    el.addEventListener('change', () => { touched[touchKey] = true; validateForm(); if (id === 'apptDate') filterTimeSlots(); });
+    el.addEventListener('change', () => {
+        touched[touchKey] = true;
+        validateForm();
+        if (id === 'apptDate') {
+          filterTimeSlots();
+          updateDateColor(el); // iOS Safari date color fix
+        }
+      });
     el.addEventListener('blur',   () => { touched[touchKey] = true; validateForm(); });
   });
 
@@ -432,8 +447,14 @@ function submitAppointment() {
 function resetAppointmentForm() {
   ['apptName', 'apptMobile', 'apptGender', 'apptDate', 'apptTime'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.value = ''; el.classList.remove('valid', 'invalid'); }
+    if (el) {
+      el.value = '';
+      el.classList.remove('valid', 'invalid');
+      el.style.color = ''; // reset inline color
+    }
   });
+  // Reset date input color for iOS
+  updateDateColor(document.getElementById('apptDate'));
   ['nameError', 'mobileError', 'genderError', 'dateError', 'timeError'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
