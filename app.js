@@ -181,7 +181,7 @@ function buildTreatments() {
 /* =====================================================
    SCROLL TRACKING & FADE-IN
    ===================================================== */
-const sections = ['home', 'about', 'treatments', 'appointment', 'reviews', 'contact'];
+const sections = ['home', 'about', 'treatments', 'appointment', 'contact'];
 
 function updateActiveNav(current) {
   sections.forEach(id => {
