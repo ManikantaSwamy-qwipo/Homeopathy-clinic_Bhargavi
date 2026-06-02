@@ -1,8 +1,8 @@
 /* =====================================================
    CONFIGURATION
    ===================================================== */
-const API_URL = 'http://localhost:5000/api';
-// For local development, change to: 'http://localhost:5000/api'
+const API_URL = 'https://homeopathy-clinic-bhargavi-backend.onrender.com/api';
+// Local development: 'http://localhost:5000/api'
 
 /* =====================================================
    TREATMENTS DATA
