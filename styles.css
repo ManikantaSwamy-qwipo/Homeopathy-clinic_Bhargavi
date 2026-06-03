@@ -437,10 +437,10 @@ section {
 }
 
 /* =====================================================
-   DATE INPUT — simple, native, works on all platforms
-   Uses .date-native class to avoid inheriting appearance:none
-   from .form-panel input which breaks Android Chrome
+   DATE INPUT — native rendering for all platforms
+   Higher specificity than .form-panel input to override appearance:none
    ===================================================== */
+.form-panel input.date-native,
 input.date-native {
   margin-bottom: 4px;
   padding: 12px;
@@ -457,29 +457,27 @@ input.date-native {
   min-height: 48px;
   -webkit-box-shadow: none;
   box-shadow: none;
-  /* NO appearance override — let browser render date picker natively */
+  /* CRITICAL: Reset appearance so Android Chrome renders the date picker natively */
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  appearance: auto !important;
 }
 
+.form-panel input.date-native:focus,
 input.date-native:focus {
   outline: none;
   border-color: #2c7a7b;
 }
 
+.form-panel input.date-native.valid,
 input.date-native.valid   { border-color: #28a745; }
+
+.form-panel input.date-native.invalid,
 input.date-native.invalid { border-color: #dc3545; }
 
-/* iOS Safari: date picker renders fine natively, just needs color fix */
-.ios-device input.date-native {
-  color: transparent;
-  position: relative;
-}
-
-/* iOS label overlay (shown when no value selected) */
-.ios-device input.date-native::before {
-  content: attr(data-placeholder);
-  position: absolute;
-  color: #999;
-  pointer-events: none;
+/* iOS Safari — keep native appearance, fix color */
+.ios-device .form-panel input.date-native {
+  color: #333333;
 }
 
 .form-panel input.valid,
