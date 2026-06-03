@@ -438,11 +438,96 @@ section {
 
 /* Date input: appearance:none breaks Android Chrome — restore native rendering */
 .form-panel input[type="date"] {
-  -webkit-appearance: auto;
-  -moz-appearance: auto;
-  appearance: auto;
-  -webkit-text-fill-color: #333333;
+  -webkit-appearance: none;
+  appearance: none;
   color: #333333;
+  -webkit-text-fill-color: #333333;
+}
+
+/* =====================================================
+   DATE WRAPPER
+   iOS Safari: overlay trick — label shown, native picker behind
+   Android/Desktop: plain styled date input, no wrapper magic
+   ===================================================== */
+.date-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+/* The display label — hidden by default, shown on iOS only */
+.date-display {
+  display: none;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #999999;
+  min-height: 48px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ios-device .date-display        { display: flex; }
+.date-display.has-value           { color: #333333; }
+.date-display.valid-date          { border-color: #28a745; }
+.date-display.invalid-date        { border-color: #dc3545; }
+.date-display::after              { content: '📅'; margin-left: auto; font-size: 16px; }
+
+/* Date input — normal visible input on Android/desktop */
+.date-wrapper input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #333333;
+  -webkit-text-fill-color: #333333;
+  font-size: 16px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  display: block;
+  position: relative;
+  z-index: 1;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  min-height: 48px;
+}
+
+.date-wrapper input[type="date"]:focus {
+  outline: none;
+  border-color: #2c7a7b;
+}
+
+.date-wrapper input[type="date"].valid   { border-color: #28a745; }
+.date-wrapper input[type="date"].invalid { border-color: #dc3545; }
+
+/* iOS only: hide the real input, use it as tap target behind the display label */
+.ios-device .date-wrapper input[type="date"] {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  padding: 0;
+  border: none;
+  z-index: 2;
+  min-height: unset;
+}
+
+.form-panel input.valid,
+.form-panel select.valid {
+  border-color: #28a745;
+}
+
+.form-panel input.invalid,
+.form-panel select.invalid {
+  border-color: #dc3545;
 }
 
 .form-panel input:focus,
@@ -462,106 +547,6 @@ section {
   background-position: right 12px center;
   background-size: 16px;
   padding-right: 40px;
-}
-
-/* =====================================================
-   DATE INPUT
-   Single unified approach that works on iOS, Android and desktop.
-   - iOS Safari: uses the wrapper overlay trick (native picker via opacity:0 input)
-   - Android Chrome + Desktop: shows the real styled input directly
-   ===================================================== */
-.date-wrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: 4px;
-}
-
-/* Visible label shown on iOS only */
-.date-display {
-  display: none; /* hidden by default — shown only on iOS via JS class */
-  align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  font-size: 16px;
-  background-color: #ffffff;
-  color: #999999;
-  min-height: 48px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* JS adds .ios-device class to body on iOS — shows the label */
-.ios-device .date-display {
-  display: flex;
-}
-
-.date-display.has-value  { color: #333333; }
-.date-display.valid-date { border-color: #28a745; }
-.date-display.invalid-date { border-color: #dc3545; }
-
-.date-display::after {
-  content: '📅';
-  margin-left: auto;
-  font-size: 16px;
-}
-
-/* Real date input — visible on Android/desktop, invisible overlay on iOS */
-.date-wrapper input[type="date"] {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #333333;
-  font-size: 16px;
-  font-family: inherit;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-  /* Do NOT use appearance:none on date — it breaks Android Chrome rendering */
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  cursor: pointer;
-  display: block;
-  position: relative;
-  z-index: 1;
-  /* Force text color on Android Chrome */
-  -webkit-text-fill-color: #333333;
-  opacity: 1;
-}
-
-.date-wrapper input[type="date"]:focus {
-  outline: none;
-  border-color: #2c7a7b;
-}
-
-.date-wrapper input[type="date"].valid   { border-color: #28a745; }
-.date-wrapper input[type="date"].invalid { border-color: #dc3545; }
-
-/* On iOS: make the real input invisible but keep it on top as a tap target */
-.ios-device .date-wrapper input[type="date"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  padding: 0;
-  border: none;
-  z-index: 2;
-}
-
-.form-panel input.invalid,
-.form-panel select.invalid {
-  border-color: #dc3545;
-}
-
-.form-panel input.valid,
-.form-panel select.valid {
-  border-color: #28a745;
 }
 
 .error {
