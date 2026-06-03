@@ -177,32 +177,10 @@
           </select>
           <span class="error" id="genderError"></span>
 
-          <!-- DATE — custom 3-dropdown picker works reliably on all devices -->
-          <div class="custom-date-picker" id="customDatePicker">
-            <select id="apptDay" class="date-part">
-              <option value="">Day</option>
-            </select>
-            <select id="apptMonth" class="date-part">
-              <option value="">Month</option>
-              <option value="01">January</option>
-              <option value="02">February</option>
-              <option value="03">March</option>
-              <option value="04">April</option>
-              <option value="05">May</option>
-              <option value="06">June</option>
-              <option value="07">July</option>
-              <option value="08">August</option>
-              <option value="09">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-            </select>
-            <select id="apptYear" class="date-part">
-              <option value="">Year</option>
-            </select>
+          <!-- DATE — single native date picker -->
+          <div class="date-field">
+            <input type="date" id="apptDate" />
           </div>
-          <!-- Hidden input holds the combined YYYY-MM-DD value for form submission -->
-          <input type="hidden" id="apptDate" />
           <span class="error" id="dateError"></span>
 
           <!-- TIME -->
