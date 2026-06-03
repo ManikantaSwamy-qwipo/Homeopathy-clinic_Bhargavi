@@ -249,31 +249,17 @@ function setMinDate() {
   if (!dateInput) return;
   const today = new Date().toISOString().split('T')[0];
   dateInput.min = today;
-  updateDateDisplay(dateInput);
 }
 
-// Format YYYY-MM-DD → "01 Jun 2026" for the iOS display label
 function formatDateForDisplay(val) {
-  if (!val) return 'Select Date';
+  if (!val) return '';
   const [year, month, day] = val.split('-');
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
 }
 
-// Update the visible date label (iOS) and sync valid/invalid classes
-function updateDateDisplay(input) {
-  if (!input) return;
-  const display = document.getElementById('dateDisplay');
-  if (!display) return;
-
-  if (input.value) {
-    display.textContent = formatDateForDisplay(input.value);
-    display.classList.add('has-value');
-  } else {
-    display.textContent = 'Select Date';
-    display.classList.remove('has-value');
-  }
-}
+// No-op kept for compatibility — wrapper removed
+function updateDateDisplay() {}
 
 function getVal(id) {
   const el = document.getElementById(id);
@@ -290,15 +276,6 @@ function setFieldState(inputId, isValid) {
   if (!el) return;
   el.classList.toggle('valid',   isValid);
   el.classList.toggle('invalid', !isValid);
-
-  // Also sync the iOS date display label border
-  if (inputId === 'apptDate') {
-    const display = document.getElementById('dateDisplay');
-    if (display) {
-      display.classList.toggle('valid-date',   isValid);
-      display.classList.toggle('invalid-date', !isValid);
-    }
-  }
 }
 
 function validateForm() {
@@ -478,12 +455,6 @@ function resetAppointmentForm() {
       el.style.color = '';
     }
   });
-  // Reset iOS date display label
-  const display = document.getElementById('dateDisplay');
-  if (display) {
-    display.textContent = 'Select Date';
-    display.classList.remove('has-value', 'valid-date', 'invalid-date');
-  }
   ['nameError', 'mobileError', 'genderError', 'dateError', 'timeError'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
