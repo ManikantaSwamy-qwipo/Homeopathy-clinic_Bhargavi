@@ -119,7 +119,6 @@ function buildCarousel() {
 }
 
 function updateCarouselUI() {
-  const images = getImages();
   const imgEls = document.querySelectorAll('#heroCarousel .hero-img');
   const dotEls = document.querySelectorAll('#heroCarousel .dots span');
 
@@ -526,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Detect iOS Safari reliably via JS and add class to body
   // This drives the date input overlay behaviour in CSS
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent));
   if (isIOS) {
     document.body.classList.add('ios-device');
   }
