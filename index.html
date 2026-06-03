@@ -177,8 +177,11 @@
           </select>
           <span class="error" id="genderError"></span>
 
-          <!-- DATE — single native date picker -->
+          <!-- DATE — tap-target label opens hidden native date picker -->
           <div class="date-field">
+            <label class="date-label" id="dateLabelBtn" for="apptDate">
+              <span id="dateLabelText">📅 Select Date</span>
+            </label>
             <input type="date" id="apptDate" />
           </div>
           <span class="error" id="dateError"></span>

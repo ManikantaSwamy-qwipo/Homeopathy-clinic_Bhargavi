@@ -251,7 +251,20 @@ function setMinDate() {
   dateInput.min = today;
 }
 
-function syncDateFromParts() {}  // no-op — single input now
+function formatDateLabel(val) {
+  if (!val) return '📅 Select Date';
+  const [year, month, day] = val.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `📅 ${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
+}
+
+function updateDateLabel(dateVal) {
+  const label     = document.getElementById('dateLabelBtn');
+  const labelText = document.getElementById('dateLabelText');
+  if (!label || !labelText) return;
+  labelText.textContent = formatDateLabel(dateVal);
+  label.classList.toggle('has-value', !!dateVal);
+}
 
 function getVal(id) {
   const el = document.getElementById(id);
@@ -268,6 +281,14 @@ function setFieldState(inputId, isValid) {
   if (!el) return;
   el.classList.toggle('valid',   isValid);
   el.classList.toggle('invalid', !isValid);
+  // Keep the date label border in sync
+  if (inputId === 'apptDate') {
+    const label = document.getElementById('dateLabelBtn');
+    if (label) {
+      label.classList.toggle('valid',   isValid);
+      label.classList.toggle('invalid', !isValid);
+    }
+  }
 }
 
 function validateForm() {
@@ -379,7 +400,10 @@ function initAppointmentForm() {
     el.addEventListener('change', () => {
       touched[touchKey] = true;
       validateForm();
-      if (id === 'apptDate') filterTimeSlots();
+      if (id === 'apptDate') {
+        filterTimeSlots();
+        updateDateLabel(el.value);
+      }
     });
     el.addEventListener('blur', () => { touched[touchKey] = true; validateForm(); });
   });
