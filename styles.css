@@ -437,47 +437,54 @@ section {
 }
 
 /* =====================================================
-   DATE INPUT — native rendering for all platforms
-   Higher specificity than .form-panel input to override appearance:none
+   CUSTOM DATE PICKER — 3 dropdowns (Day / Month / Year)
+   Reliable on Android, iOS, and desktop — no appearance tricks needed
    ===================================================== */
-.form-panel input.date-native,
-input.date-native {
+.custom-date-picker {
+  display: flex;
+  gap: 8px;
   margin-bottom: 4px;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #ddd;
-  font-size: 16px;
   width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-  background-color: #ffffff;
-  color: #333333;
-  font-family: inherit;
-  display: block;
-  min-height: 48px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  /* CRITICAL: Reset appearance so Android Chrome renders the date picker natively */
-  -webkit-appearance: auto !important;
-  -moz-appearance: auto !important;
-  appearance: auto !important;
 }
 
-.form-panel input.date-native:focus,
-input.date-native:focus {
+.custom-date-picker .date-part {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #ffffff;
+  color: #333333;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-family: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 14px;
+  padding-right: 24px;
+  margin-bottom: 0;
+  width: auto;
+}
+
+.custom-date-picker .date-part:focus {
   outline: none;
   border-color: #2c7a7b;
 }
 
-.form-panel input.date-native.valid,
-input.date-native.valid   { border-color: #28a745; }
+.custom-date-picker .date-part.valid   { border-color: #28a745; }
+.custom-date-picker .date-part.invalid { border-color: #dc3545; }
 
-.form-panel input.date-native.invalid,
-input.date-native.invalid { border-color: #dc3545; }
-
-/* iOS Safari — keep native appearance, fix color */
-.ios-device .form-panel input.date-native {
-  color: #333333;
+/* Remove the old date-native rules — no longer needed */
+.form-panel input.date-native,
+input.date-native {
+  display: none;
 }
 
 .form-panel input.valid,

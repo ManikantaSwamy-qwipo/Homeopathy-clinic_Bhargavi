@@ -245,21 +245,48 @@ function initNavbar() {
 const touched = { name: false, mobile: false, gender: false, date: false, time: false };
 
 function setMinDate() {
-  const dateInput = document.getElementById('apptDate');
-  if (!dateInput) return;
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.min = today;
+  const today = new Date();
+  const currentYear = today.getFullYear();
+
+  // Populate Year dropdown: current year + next 2 years
+  const yearSelect = document.getElementById('apptYear');
+  if (yearSelect) {
+    yearSelect.innerHTML = '<option value="">Year</option>';
+    for (let y = currentYear; y <= currentYear + 2; y++) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+    }
+  }
+
+  // Populate Day dropdown: 1-31
+  const daySelect = document.getElementById('apptDay');
+  if (daySelect) {
+    daySelect.innerHTML = '<option value="">Day</option>';
+    for (let d = 1; d <= 31; d++) {
+      const opt = document.createElement('option');
+      opt.value = String(d).padStart(2, '0');
+      opt.textContent = d;
+      daySelect.appendChild(opt);
+    }
+  }
 }
 
-function formatDateForDisplay(val) {
-  if (!val) return '';
-  const [year, month, day] = val.split('-');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
-}
+// Combine Day/Month/Year into hidden YYYY-MM-DD input
+function syncDateFromParts() {
+  const day   = document.getElementById('apptDay')   ? document.getElementById('apptDay').value   : '';
+  const month = document.getElementById('apptMonth') ? document.getElementById('apptMonth').value : '';
+  const year  = document.getElementById('apptYear')  ? document.getElementById('apptYear').value  : '';
+  const hidden = document.getElementById('apptDate');
+  if (!hidden) return;
 
-// No-op kept for compatibility — wrapper removed
-function updateDateDisplay() {}
+  if (day && month && year) {
+    hidden.value = `${year}-${month}-${day}`;
+  } else {
+    hidden.value = '';
+  }
+}
 
 function getVal(id) {
   const el = document.getElementById(id);
@@ -372,33 +399,55 @@ function filterTimeSlots() {
 function initAppointmentForm() {
   setMinDate();
 
+  // Wire up the three date part dropdowns
+  ['apptDay', 'apptMonth', 'apptYear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('change', () => {
+      syncDateFromParts();
+      touched.date = true;
+      validateForm();
+      filterTimeSlots();
+      // Mark all three parts valid/invalid together
+      const dateVal = getVal('apptDate');
+      const isValid = dateVal && !getDateError(dateVal);
+      ['apptDay', 'apptMonth', 'apptYear'].forEach(pid => {
+        const p = document.getElementById(pid);
+        if (p) {
+          p.classList.toggle('valid',   !!dateVal && isValid);
+          p.classList.toggle('invalid', touched.date && (!dateVal || !isValid));
+        }
+      });
+    });
+  });
+
   const fields = [
     { id: 'apptName',   touchKey: 'name' },
     { id: 'apptMobile', touchKey: 'mobile' },
     { id: 'apptGender', touchKey: 'gender' },
-    { id: 'apptDate',   touchKey: 'date' },
     { id: 'apptTime',   touchKey: 'time' }
   ];
 
   fields.forEach(({ id, touchKey }) => {
     const el = document.getElementById(id);
     if (!el) return;
-
     el.addEventListener('input',  () => { touched[touchKey] = true; validateForm(); });
-    el.addEventListener('change', () => {
-        touched[touchKey] = true;
-        validateForm();
-        if (id === 'apptDate') {
-          filterTimeSlots();
-          updateDateDisplay(el); // update iOS date label
-        }
-      });
+    el.addEventListener('change', () => { touched[touchKey] = true; validateForm(); });
     el.addEventListener('blur',   () => { touched[touchKey] = true; validateForm(); });
   });
 
-  // Disable submit initially
   const btn = document.getElementById('apptSubmitBtn');
   if (btn) btn.disabled = true;
+}
+
+// Helper to get date error without side effects
+function getDateError(date) {
+  if (!date) return 'Date is required';
+  const selected = new Date(date);
+  const today    = new Date(new Date().toDateString());
+  if (selected < today)             return 'Past dates not allowed';
+  if (selected.getDay() === 0)      return 'Sunday is holiday';
+  return '';
 }
 
 function submitAppointment() {
@@ -447,14 +496,18 @@ function submitAppointment() {
 }
 
 function resetAppointmentForm() {
-  ['apptName', 'apptMobile', 'apptGender', 'apptDate', 'apptTime'].forEach(id => {
+  ['apptName', 'apptMobile', 'apptGender', 'apptTime'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) {
-      el.value = '';
-      el.classList.remove('valid', 'invalid');
-      el.style.color = '';
-    }
+    if (el) { el.value = ''; el.classList.remove('valid', 'invalid'); }
   });
+  // Reset date dropdowns
+  ['apptDay', 'apptMonth', 'apptYear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('valid', 'invalid'); }
+  });
+  const hidden = document.getElementById('apptDate');
+  if (hidden) hidden.value = '';
+
   ['nameError', 'mobileError', 'genderError', 'dateError', 'timeError'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
