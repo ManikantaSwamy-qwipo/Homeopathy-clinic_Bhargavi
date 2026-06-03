@@ -436,6 +436,15 @@ section {
   font-family: inherit;
 }
 
+/* Date input: appearance:none breaks Android Chrome — restore native rendering */
+.form-panel input[type="date"] {
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  appearance: auto;
+  -webkit-text-fill-color: #333333;
+  color: #333333;
+}
+
 .form-panel input:focus,
 .form-panel select:focus {
   outline: none;
@@ -512,15 +521,16 @@ section {
   font-family: inherit;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  /* Do NOT use appearance:none on date — it breaks Android Chrome rendering */
   -webkit-box-shadow: none;
   box-shadow: none;
   cursor: pointer;
   display: block;
   position: relative;
   z-index: 1;
+  /* Force text color on Android Chrome */
+  -webkit-text-fill-color: #333333;
+  opacity: 1;
 }
 
 .date-wrapper input[type="date"]:focus {
