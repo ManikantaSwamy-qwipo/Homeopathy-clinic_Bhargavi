@@ -523,6 +523,14 @@ window.addEventListener('resize', () => {
    INIT
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+  // Detect iOS Safari reliably via JS and add class to body
+  // This drives the date input overlay behaviour in CSS
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isIOS) {
+    document.body.classList.add('ios-device');
+  }
+
   setFooterYear();
   buildCarousel();
   startCarousel();
