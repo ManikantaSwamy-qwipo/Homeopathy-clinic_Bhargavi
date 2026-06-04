@@ -247,8 +247,13 @@ const touched = { name: false, mobile: false, gender: false, date: false, time: 
 function setMinDate() {
   const dateInput = document.getElementById('apptDate');
   if (!dateInput) return;
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.min = today;
+  const today = new Date();
+  // min = today
+  dateInput.min = today.toISOString().split('T')[0];
+  // max = 3 months from today
+  const maxDate = new Date(today);
+  maxDate.setMonth(maxDate.getMonth() + 3);
+  dateInput.max = maxDate.toISOString().split('T')[0];
 }
 
 function formatDateLabel(val) {
@@ -321,8 +326,11 @@ function validateForm() {
   } else {
     const selected = new Date(date);
     const today    = new Date(new Date().toDateString());
+    const maxDate  = new Date(today);
+    maxDate.setMonth(maxDate.getMonth() + 3);
     if (selected < today)          dateErr = 'Past dates not allowed';
     else if (selected.getDay() === 0) dateErr = 'Sunday is holiday';
+    else if (selected > maxDate)   dateErr = 'Date must be within the next 3 months';
   }
 
   // Time
